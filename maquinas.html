@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="description" content="Menú de máquinas del sistema de tratamiento de agua.">
+    <meta name="keywords" content="maquinas, mantenimiento, tratamiento de agua, equipos">
+    <meta name="author" content="Tu Empresa">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mantenimiento de Máquinas</title>
+	<link rel="stylesheet" href="styles.css">
+
+
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            background-color: #f4f6f8;
+            color: #333;
+        }
+
+        header {
+            background-color: #1a5d8f;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+        nav {
+            background-color: #14466b;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            padding: 15px 20px;
+            font-weight: bold;
+        }
+
+        nav a:hover {
+            background-color: #1a5d8f;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: auto;
+            padding: 20px;
+            background: #ffffff;
+        }
+
+        h1, h2 {
+            color: #1a5d8f;
+        }
+
+        .menu {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+            margin-top: 30px;
+        }
+
+        .card {
+            background: #fafafa;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            padding: 30px;
+            text-align: center;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .card h3 {
+            color: #14466b;
+            margin-bottom: 10px;
+        }
+
+        .card p {
+            font-size: 0.95em;
+            margin-bottom: 15px;
+        }
+
+        .card a {
+            display: inline-block;
+            padding: 10px 18px;
+            background-color: #1a5d8f;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 0.9em;
+        }
+
+        .card a:hover {
+            background-color: #14466b;
+        }
+
+        footer {
+            background-color: #1a5d8f;
+            color: white;
+            text-align: center;
+            padding: 10px;
+            margin-top: 40px;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="logo-empresa">
+    <img src="logo.png" alt="Logo de la empresa">
+</div>
+
+
+<header>
+    <h1>Mantenimiento de Máquinas</h1>
+    <p>Control y seguimiento de equipos del sistema</p>
+</header>
+
+<nav>
+    <a href="index.html">Inicio</a>
+    <a href="maquinas.html">Máquinas</a>
+    <a href="tuberias.html">Tuberías</a>
+    <a href="filtros.html">Filtros</a>
+    <a href="tanques.html">Tanques</a>
+</nav>
+
+<div class="container">
+
+    <h2>Menú de Máquinas</h2>
+    <p>
+        Seleccione una máquina para consultar información general,
+        mantenimiento y estado operativo.
+    </p>
+
+    <div class="menu">
+
+        <div class="card">
+            <h3>🛠️ Máquina 1</h3>
+            <p>Equipo en Producción 1</p>
+            <a href="maquina_1.html">Ver información</a>
+        </div>
+
+        <div class="card">
+            <h3>🛠️ Máquina 2</h3>
+            <p>Equipo en Producción 1</p>
+            <a href="maquina_2.html">Ver información</a>
+        </div>
+
+        <div class="card">
+            <h3>🛠️ Máquina 3</h3>
+            <p>Equipo en Producción 1</p>
+            <a href="maquina_3.html">Ver información</a>
+        </div>
+
+        <div class="card">
+            <h3>🛠️ Máquina 4</h3>
+            <p>Equipo en Producción 2</p>
+            <a href="maquina_4.html">Ver información</a>
+        </div>
+
+        <div class="card">
+            <h3>🛠️ Máquina 5</h3>
+            <p>Equipo en Producción 3</p>
+            <a href="maquina_5.html">Ver información</a>
+        </div>
+
+        <div class="card">
+            <h3>🛠️ Máquina 6</h3>
+            <p>Equipo en Producción 4</p>
+            <a href="maquina_6.html">Ver información</a>
+        </div>
+
+        <div class="card">
+            <h3>🛠️ Máquina 7</h3>
+            <p>Equipo en Producción 4</p>
+            <a href="maquina_7.html">Ver información</a>
+        </div>
+
+        <div class="card">
+            <h3>🛠️ Máquina 8</h3>
+            <p>Equipo en Producción 5</p>
+            <a href="maquina_8.html">Ver información</a>
+        </div>
+
+    </div>
+
+</div>
+
+<footer>
+    <p>Intranet de Mantenimiento | Uso exclusivo de la red interna</p>
+</footer>
+
+</body>
+</html>

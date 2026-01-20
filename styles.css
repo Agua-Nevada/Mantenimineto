@@ -1,0 +1,50 @@
+/* ===== ESTILO GENERAL ===== */
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f5f5f5;
+    color: #333;
+}
+
+/* ===== LOGO EMPRESA ===== */
+.logo-empresa {
+    position: fixed;
+    top: 15px;
+    right: 15px;
+    width: 90px;
+    z-index: 1000;
+}
+
+.logo-empresa img {
+    width: 125%;
+    height: auto;
+}
+
+/* ===== CONTENEDOR ===== */
+.container {
+    max-width: 1100px;
+    margin: auto;
+    padding: 20px;
+    background: #ffffff;
+}
+
+/* ===== TITULOS ===== */
+h1, h2 {
+    color: #1a5d8f;
+}
+
+/* ===== BOTÓN VOLVER ===== */
+.volver {
+    display: inline-block;
+    margin-top: 25px;
+    padding: 10px 15px;
+    background-color: #1a5d8f;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 5px;
+}
+
+.volver:hover {
+    background-color: #14466b;
+}
