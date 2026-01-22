@@ -2,40 +2,40 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Intranet de Mantenimiento</title>
+    <title>Mantenimiento - Tuberías y Procesos</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<link rel="stylesheet" href="styles.css">
-    <style>html { display: none; }</style>
+    
+    <style>html { display: none; }</style> 
     <script src="seguridad.js"></script>
-    <meta charset="UTF-8">
-    <title>Mantenimiento - Tuberías</title>
-</head>
-
 
     <style>
+        /* ===== ESTILO GENERAL ===== */
         body {
             margin: 0;
-            font-family: Arial, Helvetica, sans-serif;
+            font-family: 'Segoe UI', Arial, sans-serif;
             background-color: #f4f6f8;
             color: #333;
+            line-height: 1.6;
         }
 
         header {
             background-color: #1a5d8f;
             color: white;
-            padding: 20px;
+            padding: 25px;
             text-align: center;
         }
 
-        header h1 {
-            margin: 0;
-        }
+        header h1 { margin: 0; font-size: 28px; }
+        header p { margin: 5px 0 0; opacity: 0.9; }
 
         nav {
             background-color: #14466b;
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
         }
 
         nav a {
@@ -43,68 +43,93 @@
             text-decoration: none;
             padding: 15px 20px;
             font-weight: bold;
+            transition: 0.3s;
         }
 
-        nav a:hover {
-            background-color: #1a5d8f;
-        }
+        nav a:hover { background-color: #1a5d8f; }
 
         .container {
-            max-width: 1100px;
-            margin: auto;
-            padding: 20px;
-        }
-
-        .cards {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
-            margin-top: 30px;
-        }
-
-        .card {
+            max-width: 1000px;
+            margin: 20px auto;
+            padding: 30px;
             background: white;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-            text-align: center;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
         }
 
-        .card h3 {
+        .logo-empresa {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            width: 100px;
+        }
+
+        .logo-empresa img { width: 100%; height: auto; }
+
+        /* ===== TITULOS ===== */
+        h2 { color: #1a5d8f; border-bottom: 2px solid #f0f0f0; padding-bottom: 10px; margin-top: 40px; }
+
+        /* ===== FLUJO DE PROCESO ===== */
+        .flujo-proceso { max-width: 800px; margin: 40px auto; }
+
+        .paso {
+            background: #ffffff;
+            border-left: 6px solid #1a5d8f;
+            padding: 20px;
+            border-radius: 0 8px 8px 0;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            margin-bottom: 5px;
+            transition: transform 0.2s;
+        }
+
+        .paso:hover { transform: translateX(8px); }
+        .paso h3 { margin: 0 0 10px 0; color: #1a5d8f; font-size: 1.2em; }
+        .paso p { margin: 0; font-size: 15px; }
+        .paso span {
+            display: block;
+            margin-top: 10px;
+            font-size: 13px;
+            color: #2e7d32;
+            font-weight: bold;
+        }
+
+        .paso.final { border-left-color: #2e7d32; background-color: #f1f8e9; }
+
+        .flecha {
+            text-align: center;
+            font-size: 24px;
+            margin: 10px 0;
             color: #1a5d8f;
         }
 
-        .card a {
-            display: inline-block;
-            margin-top: 15px;
-            padding: 10px 15px;
-            background-color: #1a5d8f;
-            color: white;
-            text-decoration: none;
-            border-radius: 5px;
-        }
+        /* ===== DIAGRAMA Y OTROS ===== */
+        .diagrama-proceso { text-align: center; margin: 30px 0; }
+        .img-diagrama { max-width: 100%; height: auto; border-radius: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
 
-        .card a:hover {
-            background-color: #14466b;
-        }
+        ul { padding-left: 20px; }
+        ul li { margin-bottom: 12px; }
 
         footer {
             background-color: #1a5d8f;
             color: white;
             text-align: center;
-            padding: 10px;
-            margin-top: 40px;
+            padding: 20px;
+            margin-top: 50px;
+            font-size: 14px;
         }
 
+        @media (max-width: 768px) {
+            .logo-empresa { position: relative; margin: 0 auto 15px; display: block; text-align: center; }
+            .container { margin: 10px; padding: 20px; }
+        }
     </style>
 </head>
 <body>
 
-<div class="logo-empresa">
-    <img src="logo.png" alt="Logo de la empresa">
-</div>
-
 <header>
+    <div class="logo-empresa">
+        <img src="logo.png" alt="Logo de la empresa">
+    </div>
     <h1>Envasadora Monte Nevado</h1>
     <p>Gestión y control de equipos, filtros y sistemas de agua</p>
 </header>
@@ -127,38 +152,213 @@
         filtros y tanques.
     </p>
 
-    <div class="cards">
+    <h2>Proceso de Tratamiento y Empaque de Agua</h2>
+    <p>
+        A continuación se muestra el flujo completo del proceso utilizado para
+        garantizar agua de alta calidad, segura y confiable, desde su extracción
+        hasta el producto final empacado.
+    </p>
 
-        <div class="card">
-            <h3>1️⃣ Mantenimiento de Máquinas</h3>
-            <p>Control de mantenimientos realizados y programados para cada máquina.</p>
-            <a href="maquinas.html">Ingresar</a>
+    <h2>Reseña del Proceso de Tratamiento de Agua</h2>
+    <p>
+
+El proceso de tratamiento de agua implementado en la Envasadora Monte Nevado
+
+ha sido diseñado para garantizar la obtención de agua segura, estable y de
+
+alta calidad, cumpliendo con los principios de potabilización, control
+
+microbiológico y protección del producto final.
+
+</p>
+
+<p>
+
+La línea de tratamiento inicia con la extracción del agua desde los pozos,
+
+pasando por una filtración inicial de sedimentos de 5 micras, lo que permite
+
+retener partículas sólidas y proteger los equipos posteriores. Posteriormente,
+
+el agua es almacenada en tanques de agua cruda, donde se realiza la cloración
+
+controlada como barrera primaria de desinfección.
+
+</p>
+
+<p>
+
+Desde los tanques de agua cruda, el agua es bombeada hacia el sistema de
+
+filtración principal, el cual está compuesto por un filtro de zeolita para la
+
+remoción de amonio y metales, seguido de filtros de carbón activado que eliminan
+
+olor, sabor y compuestos orgánicos. Posteriormente, el agua atraviesa un filtro
+
+de resina para el control de dureza y un segundo filtro de carbón activado que
+
+actúa como pulidor químico.
+
+</p>
+
+<p>
+
+Antes de su almacenamiento final, el agua es sometida a filtración fina mediante
+
+filtros pulidores de 5 micras, asegurando la remoción de partículas residuales.
+
+Una vez en los tanques de agua procesada, se aplica tratamiento con ozono como
+
+barrera final de desinfección.
+
+</p>
+
+<p>
+
+Previo al empacado, el agua es nuevamente filtrada a 1 micra y tratada mediante
+
+lámparas UV, garantizando un control microbiológico óptimo antes de su
+
+distribución al consumidor final.
+
+</p>
+    </p>
+
+    <div class="flujo-proceso">
+        <div class="paso">
+            <h3>💧 Extracción de Agua de Pozos</h3>
+            <p>Captación de agua subterránea desde pozos profundos.</p>
+            <span>✔ Fuente natural controlada</span>
         </div>
 
-        <div class="card">
-            <h3>2️⃣ Mantenimiento de Tuberías</h3>
-            <p>Registro de lavado, inspecciones y estado de las tuberías.</p>
-            <a href="tuberias.html">Ingresar</a>
+        <div class="flecha">⬇</div>
+
+        <div class="paso">
+            <h3>🧱 Filtro de Sedimentos 5 Micras</h3>
+            <p>Retención de arena, lodos y partículas sólidas.</p>
+            <span>✔ Protege equipos posteriores</span>
         </div>
 
-        <div class="card">
-            <h3>3️⃣ Mantenimiento de Filtros</h3>
-            <p>Seguimiento de retrolavados, cambios de medio y filtros pulidores.</p>
-            <a href="filtros.html">Ingresar</a>
+        <div class="flecha">⬇</div>
+
+        <div class="paso">
+            <h3>🛢️ Tanques de Agua Cruda + Cloración</h3>
+            <p>Almacenamiento inicial con dosificación de cloro.</p>
+            <span>✔ Control microbiológico primario</span>
         </div>
 
-        <div class="card">
-            <h3>4️⃣ Mantenimiento de Tanques</h3>
-            <p>Control de limpieza y estado de tanques de agua cruda y tratada.</p>
-            <a href="tanques.html">Ingresar</a>
+        <div class="flecha">⬇</div>
+
+        <div class="paso">
+            <h3>🚰 Bombeo hacia Sistema de Filtración</h3>
+            <p>Impulso del agua hacia los filtros de tratamiento.</p>
+            <span>✔ Flujo controlado y constante</span>
         </div>
 
+        <div class="flecha">⬇</div>
+
+        <div class="paso">
+            <h3>🪨 Filtro de Zeolita</h3>
+            <p>Eliminación de amonio, metales y partículas finas.</p>
+            <span>✔ Mejora química y física del agua</span>
+        </div>
+
+        <div class="flecha">⬇</div>
+
+        <div class="paso">
+            <h3>⚫ Filtro de Carbón Activado (1)</h3>
+            <p>Remoción de cloro, olores y compuestos orgánicos.</p>
+            <span>✔ Mejora sabor y olor</span>
+        </div>
+
+        <div class="flecha">⬇</div>
+
+        <div class="paso">
+            <h3>🧪 Filtro de Resina</h3>
+            <p>Intercambio iónico para reducción de dureza y sales.</p>
+            <span>✔ Agua más ligera y estable</span>
+        </div>
+
+        <div class="flecha">⬇</div>
+
+        <div class="paso">
+            <h3>⚫ Filtro de Carbón Activado (2)</h3>
+            <p>Pulido final de compuestos orgánicos post-resina.</p>
+            <span>✔ Estabilidad química final</span>
+        </div>
+
+        <div class="flecha">⬇</div>
+
+        <div class="paso">
+            <h3>🧱 Filtro Pulidor 5 Micras</h3>
+            <p>Retención de partículas remanentes.</p>
+            <span>✔ Protección de tanques finales</span>
+        </div>
+
+        <div class="flecha">⬇</div>
+
+        <div class="paso">
+            <h3>🛢️ Tanques de Agua Procesada + Ozono</h3>
+            <p>Almacenamiento final con tratamiento por ozono.</p>
+            <span>✔ Desinfección sin residuos</span>
+        </div>
+
+        <div class="flecha">⬇</div>
+
+        <div class="paso">
+            <h3>🚰 Bombeo a Máquinas Empacadoras</h3>
+            <p>Impulso controlado hacia líneas de producción.</p>
+            <span>✔ Presión y caudal estables</span>
+        </div>
+
+        <div class="flecha">⬇</div>
+
+        <div class="paso">
+            <h3>🧱 Filtro Pulidor 1 Micra</h3>
+            <p>Filtración fina previa al empacado.</p>
+            <span>✔ Máxima claridad del agua</span>
+        </div>
+
+        <div class="flecha">⬇</div>
+
+        <div class="paso">
+            <h3>💡 Lámparas Ultravioleta (UV)</h3>
+            <p>Desinfección final sin químicos.</p>
+            <span>✔ Eliminación de bacterias y virus</span>
+        </div>
+
+        <div class="flecha">⬇</div>
+
+        <div class="paso final">
+            <h3>📦 Empaque de Agua</h3>
+            <p>Proceso final de llenado y sellado.</p>
+            <span>✔ Producto seguro y listo para consumo</span>
+        </div>
     </div>
+
+    
+
+    <h2>Diagrama del Proceso de Tratamiento de Agua</h2>
+    <div class="diagrama-proceso">
+        <img src="diagrama-proceso-agua.png" alt="Diagrama del proceso" class="img-diagrama">
+    </div>
+
+    <h2>Recomendaciones para el Cuido del Agua Procesada</h2>
+    <ul>
+        <li>Mantener los tanques debidamente cerrados, limpios y protegidos de la luz solar directa.</li>
+        <li>Verificar periódicamente la dosificación del sistema de ozonización.</li>
+        <li>No interrumpir el flujo por periodos prolongados sin realizar purgas.</li>
+        <li>Realizar el cambio oportuno de filtros de 5 y 1 micra.</li>
+        <li>Asegurar el correcto funcionamiento y limpieza de las lámparas UV.</li>
+        <li>Evitar cualquier manipulación innecesaria de válvulas posteriores al tratamiento.</li>
+        <li>Registrar y documentar todas las actividades de limpieza y mantenimiento.</li>
+    </ul>
 
 </div>
 
 <footer>
-    <p>Intranet de Mantenimiento | Uso exclusivo de la red interna</p>
+    <p>Intranet de Mantenimiento | Uso exclusivo de la red interna &copy; 2026</p>
 </footer>
 
 </body>

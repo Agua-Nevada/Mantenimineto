@@ -1,50 +1,235 @@
-/* ===== ESTILO GENERAL ===== */
+/* ===== 1. VARIABLES Y BASE ===== */
+:root {
+    --primary: #1a5d8f;
+    --primary-dark: #14466b;
+    --bg-body: #f4f6f8;
+    --bg-card: #ffffff;
+    --text-main: #333;
+    --text-muted: #666;
+    --radius: 12px;
+}
+
 body {
-    font-family: Arial, Helvetica, sans-serif;
     margin: 0;
-    padding: 0;
-    background-color: #f5f5f5;
-    color: #333;
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    background-color: var(--bg-body);
+    color: var(--text-main);
+    line-height: 1.6;
+    -webkit-tap-highlight-color: transparent; /* Optimización para móviles */
 }
 
-/* ===== LOGO EMPRESA ===== */
+/* ===== 2. HEADER Y LOGO ===== */
+header {
+    background-color: var(--primary);
+    color: white;
+    padding: 40px 20px;
+    text-align: center;
+}
+
+header h1 { 
+    margin: 0; 
+    font-size: 1.8rem; 
+}
+
+header p { 
+    margin: 10px 0 0; 
+    opacity: 0.9; 
+    font-size: 1rem;
+}
+
 .logo-empresa {
-    position: fixed;
+    position: absolute;
     top: 15px;
-    right: 15px;
-    width: 90px;
+    right: 20px;
+    width: 80px;
+    z-index: 1100;
+}
+
+.logo-empresa img { 
+    width: 100%; 
+    height: auto; 
+}
+
+/* ===== 3. NAVEGACIÓN RESPONSIVA ===== */
+nav {
+    background-color: var(--primary-dark);
+    display: flex;
+    justify-content: center;
+    position: sticky;
+    top: 0;
     z-index: 1000;
+    overflow-x: auto; /* Permite scroll horizontal en móviles si el menú es largo */
+    white-space: nowrap;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
 }
 
-.logo-empresa img {
-    width: 125%;
-    height: auto;
+nav a {
+    color: white;
+    text-decoration: none;
+    padding: 15px 20px;
+    font-weight: bold;
+    font-size: 0.95rem;
+    transition: background 0.3s;
 }
 
-/* ===== CONTENEDOR ===== */
+nav a:hover {
+    background-color: var(--primary);
+}
+
+/* ===== 4. CONTENEDORES ===== */
 .container {
     max-width: 1100px;
-    margin: auto;
-    padding: 20px;
-    background: #ffffff;
+    margin: 20px auto;
+    padding: 25px;
+    background: var(--bg-card);
+    border-radius: var(--radius);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
 }
 
-/* ===== TITULOS ===== */
-h1, h2 {
-    color: #1a5d8f;
+h2 { 
+    color: var(--primary); 
+    border-bottom: 2px solid #f0f4f8; 
+    padding-bottom: 10px;
+    font-size: 1.5rem;
 }
 
-/* ===== BOTÓN VOLVER ===== */
+/* ===== 5. SISTEMA DE TARJETAS (CARDS) ===== */
+.menu {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 20px;
+    margin-top: 25px;
+}
+
+.card {
+    border: 1px solid #eee;
+    border-radius: var(--radius);
+    padding: 25px;
+    text-align: center;
+    background-color: var(--bg-card);
+    transition: transform 0.3s, box-shadow 0.3s;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+}
+
+.card h3 {
+    color: var(--primary-dark);
+    margin: 0 0 10px 0;
+    font-size: 1.3rem;
+}
+
+.card p {
+    font-size: 0.95rem;
+    color: var(--text-muted);
+    margin-bottom: 20px;
+}
+
+.card a {
+    display: block; /* Ocupa todo el ancho en móviles para facilitar el toque */
+    padding: 12px;
+    background-color: var(--primary);
+    color: #fff;
+    text-decoration: none;
+    border-radius: 6px;
+    font-weight: bold;
+}
+
+/* ===== 6. IFRAMES (GOOGLE SHEETS) ===== */
+.sheet-container {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    overflow: hidden;
+    margin: 20px 0;
+    -webkit-overflow-scrolling: touch; /* Scroll suave en iOS */
+}
+
+iframe {
+    width: 100%;
+    height: 450px;
+    border: none;
+}
+
+/* ===== 7. BOTÓN VOLVER ===== */
 .volver {
     display: inline-block;
-    margin-top: 25px;
-    padding: 10px 15px;
+    margin-top: 30px;
+    padding: 12px 20px;
     background-color: #1a5d8f;
     color: #fff;
     text-decoration: none;
     border-radius: 5px;
+    font-weight: bold;
+    
+    /* Transición suave para todos los cambios */
+    transition: all 0.3s ease;
+    
+    /* Para que el movimiento se sienta fluido */
+    position: relative;
+    left: 0;
 }
 
+/* Efecto al pasar el mouse (Hover) */
 .volver:hover {
     background-color: #14466b;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    
+    /* Pequeño desplazamiento hacia la izquierda para enfatizar el "Volver" */
+    transform: translateX(-5px);
+}
+
+/* Efecto al hacer clic */
+.volver:active {
+    transform: translateX(0px) scale(0.95);
+}
+
+/* ===== 8. MEDIA QUERIES (ADAPTACIÓN MÓVIL) ===== */
+@media (max-width: 768px) {
+    .logo-empresa {
+        position: static;
+        margin: 10px auto;
+        display: block;
+        text-align: center;
+    }
+
+    header {
+        padding: 25px 15px;
+    }
+
+    header h1 {
+        font-size: 1.5rem;
+    }
+
+    .container {
+        margin: 10px;
+        padding: 15px;
+        border-radius: 0; /* Aprovecha más el espacio en pantallas pequeñas */
+    }
+
+    .menu {
+        grid-template-columns: 1fr; /* Una tarjeta por fila en móviles */
+    }
+
+    nav a {
+        padding: 12px 15px;
+        font-size: 0.85rem;
+    }
+    
+    iframe {
+        height: 400px;
+    }
+}
+
+footer {
+    background-color: var(--primary);
+    color: white;
+    text-align: center;
+    padding: 20px;
+    margin-top: 30px;
+    font-size: 0.9rem;
 }

@@ -2,105 +2,14 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Mantenimiento de Filtros</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<link rel="stylesheet" href="styles.css">
-	<head>
+    <meta name="description" content="Gestión y mantenimiento de las etapas de filtración de agua.">
+    <title>Filtros - Monte Nevado</title>
+    
+    <link rel="stylesheet" href="styles.css">
+    
     <style>html { display: none; }</style>
-    
     <script src="seguridad.js"></script>
-    
-    <meta charset="UTF-8">
-    <title>Mantenimiento - Tuberías</title>
-</head>
-
-    <style>
-        body {
-            margin: 0;
-            font-family: Arial, Helvetica, sans-serif;
-            background-color: #f4f6f8;
-            color: #333;
-        }
-
-        header {
-            background-color: #1a5d8f;
-            color: white;
-            padding: 20px;
-            text-align: center;
-        }
-
-        nav {
-            background-color: #14466b;
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-        }
-
-        nav a {
-            color: white;
-            text-decoration: none;
-            padding: 15px 20px;
-            font-weight: bold;
-        }
-
-        nav a:hover {
-            background-color: #1a5d8f;
-        }
-
-        .container {
-            max-width: 1100px;
-            margin: auto;
-            padding: 20px;
-        }
-
-        h2 {
-            color: #1a5d8f;
-            margin-top: 0;
-        }
-
-        .sub-menu {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
-            margin-top: 30px;
-        }
-
-        .sub-card {
-            background: white;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-            text-align: center;
-        }
-
-        .sub-card h3 {
-            color: #14466b;
-            font-size: 1.1em;
-        }
-
-        .sub-card a {
-            display: inline-block;
-            margin-top: 15px;
-            padding: 10px 15px;
-            background-color: #1a5d8f;
-            color: white;
-            text-decoration: none;
-            border-radius: 5px;
-            font-size: 0.9em;
-        }
-
-        .sub-card a:hover {
-            background-color: #14466b;
-        }
-
-        footer {
-            background-color: #1a5d8f;
-            color: white;
-            text-align: center;
-            padding: 10px;
-            margin-top: 40px;
-        }
-    </style>
 </head>
 <body>
 
@@ -109,8 +18,8 @@
 </div>
 
 <header>
-    <h1>Mantenimiento de Filtros</h1>
-    <p>Control y seguimiento de filtros del sistema</p>
+    <h1>Gestión de Filtros</h1>
+    <p>Control de medios filtrantes y purificación</p>
 </header>
 
 <nav>
@@ -123,55 +32,73 @@
 
 <div class="container">
 
-    <h2>Seleccione el filtro</h2>
+    <h2>Etapas de Filtrado</h2>
     <p>
-        En esta sección podrá consultar el historial de mantenimientos,
-        actividades programadas y el estado actual de cada filtro.
+        Seleccione la etapa de filtración para consultar los manuales, registros de retrolavado 
+        o fechas de cambio de cartuchos y medios filtrantes.
     </p>
 
-    <div class="sub-menu">
+    <div class="menu">
 
-        <div class="sub-card">
-            <h3>1️⃣ Filtro de Zeolita</h3>
-            <a href="filtro_zeolita.html">Ver mantenimiento</a>
+        <div class="card">
+            <div class="card-icon">🪨</div>
+            <h3>Filtro de Sedimentos</h3>
+            <p>Barrera primaria de 5 micras para retención de sólidos post-pozo.</p>
+            <a href="filtro_sedimentos.html">Gestionar</a>
         </div>
 
-        <div class="sub-card">
-            <h3>2️⃣ Filtro de Carbón Activado #1</h3>
-            <a href="filtro_carbon_1.html">Ver mantenimiento</a>
+        <div class="card">
+            <div class="card-icon">💎</div>
+            <h3>Filtro de Zeolita</h3>
+            <p>Remoción de turbidez, amonio y metales pesados del agua cruda.</p>
+            <a href="filtro_zeolita.html">Gestionar</a>
         </div>
 
-        <div class="sub-card">
-            <h3>3️⃣ Filtro de Resina</h3>
-            <a href="filtro_resina.html">Ver mantenimiento</a>
+        <div class="card">
+            <div class="card-icon">🌑</div>
+            <h3>Carbón Activado #1</h3>
+            <p>Eliminación de cloro residual y mejora de características organolépticas.</p>
+            <a href="filtro_carbon_1.html">Gestionar</a>
         </div>
 
-        <div class="sub-card">
-            <h3>4️⃣ Filtro de Carbón Activado #2</h3>
-            <a href="filtro_carbon_2.html">Ver mantenimiento</a>
+        <div class="card">
+            <div class="card-icon">🧪</div>
+            <h3>Filtro de Resina</h3>
+            <p>Suavizador mediante intercambio iónico para control de dureza.</p>
+            <a href="filtro_resina.html">Gestionar</a>
         </div>
 
-        <div class="sub-card">
-            <h3>5️⃣ Filtro Pulidor Pre-Tanque</h3>
-            <a href="filtro_pulidor_tanque.html">Ver mantenimiento</a>
+        <div class="card">
+            <div class="card-icon">🌑</div>
+            <h3>Carbón Activado #2</h3>
+            <p>Pulido final para asegurar la ausencia total de olores y sabores.</p>
+            <a href="filtro_carbon_2.html">Gestionar</a>
         </div>
 
-        <div class="sub-card">
-            <h3>6️⃣ Filtro Pulidor Pre-Envasado</h3>
-            <a href="filtro_pulidor_envasado.html">Ver mantenimiento</a>
+        <div class="card">
+            <div class="card-icon">🔍</div>
+            <h3>Pulidor Pre-Tanque</h3>
+            <p>Cartucho de 5 micras para protección del almacenamiento.</p>
+            <a href="filtro_pulidor_tanque.html">Gestionar</a>
         </div>
 
-        <div class="sub-card">
-            <h3>7️⃣ Filtro de Sedimentos Agua Cruda</h3>
-            <a href="filtro_sedimentos.html">Ver mantenimiento</a>
+        <div class="card">
+            <div class="card-icon">✨</div>
+            <h3>Pulidor Pre-Envasado</h3>
+            <p>Seguridad final de 1 micra absoluta antes de las máquinas.</p>
+            <a href="filtro_pulidor_envasado.html">Gestionar</a>
         </div>
 
     </div>
 
+    
+
+    <a class="volver" href="index.html">⬅ Volver al Inicio</a>
+
 </div>
 
 <footer>
-    <p>Intranet de Mantenimiento | Uso exclusivo de la red interna</p>
+    <p>Envasadora Monte Nevado | Gestión de Calidad &copy; 2026</p>
 </footer>
 
 </body>
