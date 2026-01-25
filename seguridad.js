@@ -29,15 +29,15 @@
                 justify-content: center; align-items: center; 
                 font-family: sans-serif; color: #333; text-align: center; position: fixed; top:0; left:0; z-index: 999999;">
                 
-                <div style="font-size: 50px; margin-bottom: 20px;">馃毇</div>
+                <div style="font-size: 50px; margin-bottom: 20px;">??</div>
                 <h1 style="color: #d9534f;">Acceso Denegado</h1>
                 <p style="font-size: 18px; max-width: 450px; line-height: 1.5; padding: 0 20px;">
                     ${mensaje}
                 </p>
                 <hr style="width: 50px; border: 1px solid #ddd; margin: 20px 0;">
                 <p style="font-size: 14px; color: #777;">Si usted es personal autorizado y no puede ingresar, contacte al supervisor.</p>
-				<div style="margin-top: 20px; color: #888; font-size: 14px;">Agua Envasada Monte Nevada 2026</div>
-				<div style="margin-top: 20px; color: #888; font-size: 14px;">Nos Reservamos el derecho de Acceso</div>
+                <div style="margin-top: 10px; color: #888; font-size: 14px;">Agua Envasada Monte Nevada 2026</div>
+                <div style="margin-top: 5px; color: #888; font-size: 14px;">Nos reservamos el derecho de acceso</div>
                 <div style="margin-top: 15px; padding: 8px 15px; background: #eee; border-radius: 5px; font-family: monospace; font-size: 12px; color: #555;">
                     SU IP: ${ipDetectada}
                 </div>
@@ -49,11 +49,17 @@
     async function validar() {
         const urlParams = new URLSearchParams(window.location.search);
         const llaveURL = urlParams.get('key');
+        
+        // --- LIMPIEZA INMEDIATA DE LA URL ---
+        if (llaveURL) {
+            window.history.replaceState({}, document.title, window.location.pathname);
+        }
+
         const accesoSesion = sessionStorage.getItem("accesoPermitido");
         const horaSesion = sessionStorage.getItem("horaAcceso");
         const ahora = Date.now();
 
-        // 1. Obtener datos de IP y Pa铆s primero
+        // 1. Obtener datos de IP y País
         let ipPublica = "No detectada";
         let paisCodigo = "";
         
@@ -61,34 +67,34 @@
             const res = await fetch('https://ipapi.co/json/');
             const data = await res.json();
             ipPublica = data.ip;
-            paisCodigo = data.country_code; // Ejemplo: 'SV'
+            paisCodigo = data.country_code; 
         } catch (e) {
             console.error("Error al verificar IP");
         }
 
-        // 2. L贸gica de validaci贸n combinada
+        // 2. Lógica de validación
         let tieneCredenciales = (llaveURL === llaveCorrecta) || 
                                (accesoSesion === "true" && (ahora - parseInt(horaSesion) < TIEMPO_EXPIRACION));
 
-        // 3. Verificaci贸n de Pa铆s (Solo El Salvador = SV)
+        // 3. Verificación de País (Solo El Salvador = SV)
+        // Permitimos el acceso si estamos en SV o si la IP no pudo determinarse (para evitar bloqueos por errores de API)
         if (paisCodigo !== 'SV' && paisCodigo !== "") {
-            mostrarBloqueo("La p谩gina solo puede ser visible desde El Salvador y con las credenciales correctas.", ipPublica);
+            mostrarBloqueo("La página solo puede ser visible desde El Salvador y con las credenciales correctas.", ipPublica);
             return;
         }
 
-        // 4. Verificaci贸n de Credenciales
+        // 4. Verificación de Credenciales
         if (tieneCredenciales) {
             if (llaveURL === llaveCorrecta) {
                 sessionStorage.setItem("accesoPermitido", "true");
                 sessionStorage.setItem("horaAcceso", ahora.toString());
-                window.history.replaceState({}, document.title, window.location.pathname);
             }
             document.documentElement.style.display = "block";
             bloquearInspeccion();
         } else {
             const msg = (accesoSesion === "true") ? 
-                "Su sesi贸n ha expirado. Solo puede acceder <b>escaneando el c贸digo QR autorizado</b>." : 
-                "Esta p谩gina contiene informaci贸n privada. Solo puede acceder <b>escaneando el c贸digo QR autorizado</b>.";
+                "Su sesión ha expirado. Solo puede acceder <b>escaneando el código QR autorizado</b>." : 
+                "Esta página contiene información privada. Solo puede acceder <b>escaneando el código QR autorizado</b>.";
             mostrarBloqueo(msg, ipPublica);
         }
     }
