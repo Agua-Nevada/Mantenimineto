@@ -1,9 +1,8 @@
 (function() {
-    // 0. Ocultar contenido inmediatamente
     document.documentElement.style.display = "none";
 
     const llaveCorrecta = "8L9]zykR^R,=faETFcxAguaNevada2026";
-    const TIEMPO_EXPIRACION = 30 * 60 * 1000; // 30 minutos
+    const TIEMPO_EXPIRACION = 30 * 60 * 1000; 
 
     function bloquearInspeccion() {
         document.addEventListener('contextmenu', e => e.preventDefault());
@@ -16,30 +15,37 @@
 
     function mostrarBloqueo(mensaje, ipDetectada = "Verificando...") {
         window.stop();
+        const iconoProhibido = `<svg width="80" height="80" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 2C6.477 2 2 6.477 2 12C2 17.523 6.477 22 12 22C17.523 22 22 17.523 22 12C22 6.477 17.523 2 12 2ZM4 12C4 7.581 7.581 4 12 4C13.848 4 15.535 4.626 16.879 5.678L5.678 16.879C4.626 15.535 4 13.848 4 12ZM12 20C10.152 20 8.465 19.374 7.121 18.322L18.322 7.121C19.374 8.465 20 10.152 20 12C20 16.419 16.419 20 12 20Z" fill="#d9534f"/></svg>`;
+
         document.documentElement.innerHTML = `
         <head>
             <meta charset="UTF-8">
-            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
             <title>Acceso Denegado</title>
+            <style>
+                body { margin:0; padding:0; background-color: #f0f2f5; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
+                .container { height: 100vh; width: 100vw; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; }
+                .card { background: white; padding: 30px 20px; border-radius: 20px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); width: 85%; max-width: 400px; }
+                h1 { color: #d9534f; margin: 15px 0; font-size: 24px; }
+                p { font-size: 16px; color: #555; line-height: 1.5; margin-bottom: 20px; }
+                .footer-text { font-size: 13px; color: #999; margin: 5px 0; }
+                .ip-box { margin-top: 20px; padding: 12px; background: #f8f9fa; border: 1px solid #eee; border-radius: 10px; font-family: monospace; font-size: 13px; color: #444; }
+                .divider { width: 40px; border: 1.5px solid #d9534f; margin: 0 auto 20px; border-radius: 10px; }
+            </style>
         </head>
-        <body style="margin:0; padding:0; background-color: #f8f9fa;">
-            <div style="
-                height: 100vh; width: 100vw;
-                display: flex; flex-direction: column; 
-                justify-content: center; align-items: center; 
-                font-family: sans-serif; color: #333; text-align: center; position: fixed; top:0; left:0; z-index: 999999;">
-                
-                <div style="font-size: 50px; margin-bottom: 20px;">??</div>
-                <h1 style="color: #d9534f;">Acceso Denegado</h1>
-                <p style="font-size: 18px; max-width: 450px; line-height: 1.5; padding: 0 20px;">
-                    ${mensaje}
-                </p>
-                <hr style="width: 50px; border: 1px solid #ddd; margin: 20px 0;">
-                <p style="font-size: 14px; color: #777;">Si usted es personal autorizado y no puede ingresar, contacte al supervisor.</p>
-                <div style="margin-top: 10px; color: #888; font-size: 14px;">Agua Envasada Monte Nevada 2026</div>
-                <div style="margin-top: 5px; color: #888; font-size: 14px;">Nos reservamos el derecho de acceso</div>
-                <div style="margin-top: 15px; padding: 8px 15px; background: #eee; border-radius: 5px; font-family: monospace; font-size: 12px; color: #555;">
-                    SU IP: ${ipDetectada}
+        <body>
+            <div class="container">
+                <div class="card">
+                    <div>${iconoProhibido}</div>
+                    <h1>Acceso Denegado</h1>
+                    <div class="divider"></div>
+                    <p>${mensaje}</p>
+                    <p style="font-size: 14px; color: #888;">Si es personal autorizado, contacte al supervisor de turno.</p>
+                    <div class="ip-box">IDENTIFICADOR DE RED:<br><strong>${ipDetectada}</strong></div>
+                    <div style="margin-top:25px;">
+                        <div class="footer-text">Agua Envasada Monte Nevada 2026</div>
+                        <div class="footer-text" style="font-weight:bold;">Seguridad Industrial</div>
+                    </div>
                 </div>
             </div>
         </body>`;
@@ -50,7 +56,6 @@
         const urlParams = new URLSearchParams(window.location.search);
         const llaveURL = urlParams.get('key');
         
-        // --- LIMPIEZA INMEDIATA DE LA URL ---
         if (llaveURL) {
             window.history.replaceState({}, document.title, window.location.pathname);
         }
@@ -59,8 +64,7 @@
         const horaSesion = sessionStorage.getItem("horaAcceso");
         const ahora = Date.now();
 
-        // 1. Obtener datos de IP y Pa赤s
-        let ipPublica = "No detectada";
+        let ipPublica = "Detectando red...";
         let paisCodigo = "";
         
         try {
@@ -69,21 +73,17 @@
             ipPublica = data.ip;
             paisCodigo = data.country_code; 
         } catch (e) {
-            console.error("Error al verificar IP");
+            ipPublica = "Error de conexi&oacute;n";
         }
 
-        // 2. L車gica de validaci車n
         let tieneCredenciales = (llaveURL === llaveCorrecta) || 
                                (accesoSesion === "true" && (ahora - parseInt(horaSesion) < TIEMPO_EXPIRACION));
 
-        // 3. Verificaci車n de Pa赤s (Solo El Salvador = SV)
-        // Permitimos el acceso si estamos en SV o si la IP no pudo determinarse (para evitar bloqueos por errores de API)
         if (paisCodigo !== 'SV' && paisCodigo !== "") {
-            mostrarBloqueo("La p芍gina solo puede ser visible desde El Salvador y con las credenciales correctas.", ipPublica);
+            mostrarBloqueo("Este sistema solo es accesible dentro del territorio de <b>El Salvador</b>.", ipPublica);
             return;
         }
 
-        // 4. Verificaci車n de Credenciales
         if (tieneCredenciales) {
             if (llaveURL === llaveCorrecta) {
                 sessionStorage.setItem("accesoPermitido", "true");
@@ -93,8 +93,8 @@
             bloquearInspeccion();
         } else {
             const msg = (accesoSesion === "true") ? 
-                "Su sesi車n ha expirado. Solo puede acceder <b>escaneando el c車digo QR autorizado</b>." : 
-                "Esta p芍gina contiene informaci車n privada. Solo puede acceder <b>escaneando el c車digo QR autorizado</b>.";
+                "Su sesi&oacute;n ha expirado por seguridad. Por favor, <b>escanee el c&oacute;digo QR</b> nuevamente." : 
+                "Contenido privado. Solo puede acceder mediante el <b>c&oacute;digo QR autorizado</b> en planta.";
             mostrarBloqueo(msg, ipPublica);
         }
     }
