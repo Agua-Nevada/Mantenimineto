@@ -1,11 +1,54 @@
 (function() {
-    const llaveCorrecta = "AguaNevada2026"; 
+    // 0. Ocultar el contenido inmediatamente
+    document.documentElement.style.visibility = "hidden";
 
-    // 1. Verificar si ya tiene permiso en la sesión
-    if (sessionStorage.getItem("accesoPermitido") === "true") {
-        document.documentElement.style.display = "block";
-        return;
+    const llaveCorrecta = "8L9]zykR^R,=faETFcxAguaNevada2026";
+    const TIEMPO_EXPIRACION = 30 * 60 * 1000; // 30 minutos en milisegundos
+
+    // --- FUNCIÓN DE BLOQUEO DE CTRL+U Y CLIC DERECHO ---
+    function bloquearInspeccion() {
+        // Bloquear clic derecho
+        document.addEventListener('contextmenu', e => e.preventDefault());
+        
+        // Bloquear atajos de teclado
+        document.addEventListener('keydown', e => {
+            // Bloquea Ctrl+U (Ver código fuente)
+            // Bloquea Ctrl+Shift+I (Inspeccionar)
+            // Bloquea F12 (Consola)
+            // Bloquea Ctrl+S (Guardar)
+            if (
+                e.ctrlKey && (e.key === 'u' || e.key === 'U' || e.key === 's' || e.key === 'S' || e.shiftKey && (e.key === 'i' || e.key === 'I' || e.key === 'j' || e.key === 'J')) ||
+                e.key === 'F12'
+            ) {
+                e.preventDefault();
+                return false;
+            }
+        });
     }
+
+    // --- LÓGICA DE SESIÓN CON TIEMPO ---
+    function verificarAcceso() {
+        const acceso = sessionStorage.getItem("accesoPermitido");
+        const horaInicio = sessionStorage.getItem("horaAcceso");
+        const ahora = Date.now();
+
+        if (acceso === "true" && horaInicio) {
+            if (ahora - horaInicio < TIEMPO_EXPIRACION) {
+                // Sesión aún válida
+                document.documentElement.style.visibility = "visible";
+                document.documentElement.style.display = "block";
+                bloquearInspeccion();
+                return true;
+            } else {
+                // Sesión expirada
+                sessionStorage.clear();
+            }
+        }
+        return false;
+    }
+
+    // 1. Ejecutar verificación inicial
+    if (verificarAcceso()) return;
 
     // 2. Buscar la llave en la URL
     const urlParams = new URLSearchParams(window.location.search);
@@ -13,37 +56,41 @@
 
     if (llaveIngresada === llaveCorrecta) {
         sessionStorage.setItem("accesoPermitido", "true");
-        window.history.replaceState({}, document.title, window.location.pathname);
-        document.documentElement.style.display = "block";
-    } else {
-        // --- ESTA ES LA PARTE QUE CORRIGE EL ERROR ---
-        window.stop(); // Detiene la carga de imágenes y scripts restantes
+        sessionStorage.setItem("horaAcceso", Date.now().toString());
         
-        document.documentElement.innerHTML = `
+        window.history.replaceState({}, document.title, window.location.pathname);
+        document.documentElement.style.visibility = "visible";
+        document.documentElement.style.display = "block";
+        bloquearInspeccion();
+    } else {
+        // 3. Mostrar pantalla de bloqueo
+        window.stop();
+        
+        const htmlBloqueo = `
         <head>
             <meta charset="UTF-8">
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
             <title>Acceso Restringido</title>
+            <style>
+                body { margin:0; padding:0; background-color: #f8f9fa; color: #333; font-family: sans-serif; overflow: hidden; }
+                .container { height: 100vh; width: 100vw; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; }
+                .icon { font-size: 60px; margin-bottom: 20px; }
+                h1 { color: #d9534f; }
+                p { font-size: 18px; max-width: 420px; line-height: 1.6; padding: 0 25px; }
+            </style>
         </head>
-        <body style="margin:0; padding:0;">
-            <div style="
-                height: 100vh; width: 100vw;
-                display: flex; flex-direction: column; 
-                justify-content: center; align-items: center; 
-                font-family: sans-serif; background-color: #f8f9fa; 
-                color: #333; text-align: center; position: fixed; top:0; left:0; z-index: 999999;">
-                
-                <div style="font-size: 50px; margin-bottom: 20px;">🚫</div>
-                <h1 style="color: #d9534f;">Acceso Restringido</h1>
-                <p style="font-size: 18px; max-width: 400px; line-height: 1.5; padding: 0 20px;">
-                    Esta página contiene información privada de mantenimiento. 
-                    Solo puede acceder <b>escaneando el código QR autorizado</b>.
-                </p>
-                <hr style="width: 50px; border: 1px solid #ddd; margin: 20px 0;">
-                <p style="font-size: 14px; color: #777;">Si usted es personal autorizado y no puede ingresar, contacte al supervisor.</p>
+        <body oncontextmenu="return false;">
+            <div class="container">
+                <div class="icon">🚫</div>
+                <h1>Acceso Restringido o Expirado</h1>
+                <p>Por seguridad, la sesión dura 30 minutos.<br>
+                   Por favor, <b>escanee el código QR autorizado</b> nuevamente.</p>
             </div>
         </body>`;
-        
-        document.documentElement.style.display = "block";
+
+        document.open();
+        document.write(htmlBloqueo);
+        document.close();
+        document.documentElement.style.visibility = "visible";
     }
 })();
