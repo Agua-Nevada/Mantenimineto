@@ -140,19 +140,35 @@ h2 {
     font-weight: bold;
 }
 
-/* ===== 6. IFRAMES (GOOGLE SHEETS) ===== */
+/* ===== 6. IFRAMES (GOOGLE SHEETS) - OPTIMIZADO ===== */
 .sheet-container {
     border: 1px solid #ddd;
     border-radius: 8px;
-    overflow: hidden;
     margin: 20px 0;
-    -webkit-overflow-scrolling: touch; /* Scroll suave en iOS */
+    
+    /* EL CAMBIO CLAVE: */
+    height: 70vh; /* Ocupa el 70% de la altura de la pantalla del móvil */
+    overflow: auto; /* Permite que el contenedor gestione el scroll */
+    -webkit-overflow-scrolling: touch; /* Activa la inercia suave en iPhone/iPad */
+    
+    /* Evita que el iFrame 'bloquee' el scroll de la página principal */
+    position: relative; 
 }
 
 iframe {
     width: 100%;
-    height: 450px;
+    height: 100%; /* Ahora el iframe llena el contenedor de arriba */
     border: none;
+    display: block;
+}
+
+/* Ajuste específico para pantallas muy pequeñas */
+@media (max-width: 480px) {
+    .sheet-container {
+        height: 500px; /* Altura fija para que no se pierdan */
+        margin: 10px -15px; /* Rompe un poco el margen lateral para ganar espacio */
+        border-radius: 0;
+    }
 }
 
 /* ===== 7. BOTÓN VOLVER ===== */
