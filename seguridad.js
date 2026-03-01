@@ -1,64 +1,62 @@
 (function() {
-    // 1. BLOQUEO VISUAL E INTERFAZ
+    // 1. BLOQUEO VISUAL INICIAL
     document.documentElement.style.display = "none";
+    
+    // Bloqueos de seguridad
     document.addEventListener('contextmenu', e => e.preventDefault());
     document.addEventListener('keydown', e => {
         if (e.key === 'F12' || (e.ctrlKey && (e.key === 'u' || e.key === 's')) || (e.ctrlKey && e.shiftKey && e.key === 'i')) {
             e.preventDefault();
-            return false;
         }
     });
 
-    // Anti-Inspección
-    setInterval(() => {
-        (function() { return false; }['constructor']('debugger')());
-    }, 50);
-
     // ===== CONFIGURACIÓN MAESTRA =====
-    const LLAVE_QR = "8L9]zykR^R,faETFcxAguaNevada2026";
+    // Verifica que esta llave sea EXACTAMENTE la que generas en el QR
+    const LLAVE_QR = "8L9]zykR^R,=faETFcxAguaNevada2026";
     const CLAVE_TECNICA = "Agua2026_Admin"; 
-    const TIEMPO_EXPIRACION = 15 * 60 * 1000; // 15 Minutos estrictos
+    const TIEMPO_EXPIRACION = 15 * 60 * 1000; 
 
     function limpiarURL() {
         const urlLimpia = window.location.protocol + "//" + window.location.host + window.location.pathname;
         window.history.replaceState({}, document.title, urlLimpia);
     }
 
-    function mostrarBloqueo(mensaje, ipDetectada = "Verificando...") {
+    window.intentarAccesoManual = function() {
+        const pass = prompt("SISTEMA DE EMERGENCIA\nIngrese clave de administrador:");
+        if (pass === CLAVE_TECNICA) {
+            sessionStorage.setItem("accesoPermitido", "true");
+            sessionStorage.setItem("horaAcceso", Date.now().toString());
+            location.href = window.location.pathname; // Recargar limpio
+        } else if (pass !== null) {
+            alert("Clave incorrecta.");
+        }
+    };
+
+    function mostrarPantallaError(mensaje, ipDetectada = "Verificando...") {
         window.stop();
         document.documentElement.innerHTML = `
         <head>
             <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
             <style>
                 body { margin:0; background:#f0f2f5; font-family:sans-serif; display:flex; justify-content:center; align-items:center; height:100vh; user-select:none; }
-                .card { background:white; padding:30px; border-radius:20px; box-shadow:0 10px 25px rgba(0,0,0,0.1); width:85%; max-width:400px; text-align:center; }
-                h1 { color:#d9534f; font-size:22px; margin: 15px 0; }
-                p { color: #555; line-height: 1.5; font-size: 15px; }
-                .ip-box { margin-top:20px; padding:10px; background:#f8f9fa; border-radius:10px; font-family:monospace; font-size:11px; color: #777; }
+                .card { background:white; padding:35px; border-radius:20px; box-shadow:0 10px 25px rgba(0,0,0,0.1); width:85%; max-width:400px; text-align:center; }
+                h1 { color:#d9534f; font-size:24px; margin-bottom:15px; }
+                p { color: #555; line-height: 1.6; font-size: 15px; }
+                .btn-manual { display:inline-block; margin-top:20px; color:#007bff; text-decoration:none; font-weight:bold; cursor:pointer; font-size:14px; border:1px solid #007bff; padding:8px 15px; border-radius:8px; transition: 0.3s; }
+                .btn-manual:hover { background:#007bff; color:white; }
+                .ip-box { margin-top:25px; padding:10px; background:#f8f9fa; border-radius:10px; font-family:monospace; font-size:11px; color: #888; border:1px solid #eee; }
             </style>
         </head>
         <body>
             <div class="card">
-                <h1 style="font-size:50px; margin:0;">⚠️</h1>
+                <div style="font-size:50px;">🚫</div>
                 <h1>Acceso Restringido</h1>
                 <p>${mensaje}</p>
-                <div class="ip-box">IDENTIFICADOR DE RED:<br><strong>${ipDetectada}</strong></div>
+                <div class="btn-manual" onclick="window.intentarAccesoManual()">Entrar con contraseña</div>
+                <div class="ip-box">ID CONEXIÓN:<br><strong>${ipDetectada}</strong></div>
             </div>
         </body>`;
         document.documentElement.style.display = "block";
-    }
-
-    function solicitarClave(mensajePrompt) {
-        limpiarURL(); 
-        const pass = prompt(mensajePrompt);
-        if (pass === CLAVE_TECNICA) {
-            sessionStorage.setItem("accesoPermitido", "true");
-            sessionStorage.setItem("horaAcceso", Date.now().toString());
-            document.documentElement.style.display = "block";
-        } else {
-            alert("Clave incorrecta.");
-            location.reload();
-        }
     }
 
     async function validar() {
@@ -68,46 +66,39 @@
         const horaSesion = sessionStorage.getItem("horaAcceso");
         const ahora = Date.now();
 
-        // 1. FILTRO DE PAÍS (EL SALVADOR)
+        // 1. PRIORIDAD: ¿Tiene la llave correcta ahora mismo?
+        if (llaveURL === LLAVE_QR) {
+            sessionStorage.setItem("accesoPermitido", "true");
+            sessionStorage.setItem("horaAcceso", ahora.toString());
+            limpiarURL();
+            document.documentElement.style.display = "block";
+            return;
+        }
+
+        // 2. ¿Tiene una sesión activa de menos de 15 min?
+        if (accesoSesion === "true" && horaSesion) {
+            if (ahora - parseInt(horaSesion) < TIEMPO_EXPIRACION) {
+                document.documentElement.style.display = "block";
+                return;
+            } else {
+                sessionStorage.clear(); // Sesión expirada
+            }
+        }
+
+        // 3. SI NO TIENE LLAVE NI SESIÓN, VERIFICAMOS PAÍS ANTES DE MOSTRAR ERROR
         let ipPublica = "Detectando...";
         try {
             const res = await fetch('https://ipapi.co/json/');
             const data = await res.json();
             ipPublica = data.ip;
             if (data.country_code !== 'SV' && data.country_code !== undefined) {
-                mostrarBloqueo("Este sistema solo es accesible desde <b>El Salvador</b>.", ipPublica);
+                mostrarPantallaError("Este sistema solo es accesible dentro de <b>El Salvador</b>.", ipPublica);
                 return;
             }
-        } catch (e) { 
-            // Si falla el servicio de IP, permitimos continuar pero con cautela
-            ipPublica = "Error de verificación (Red Local)"; 
-        }
+        } catch (e) { ipPublica = "Red Local"; }
 
-        // 2. VERIFICAR SI LA SESIÓN ESTÁ ACTIVA (15 MINUTOS)
-        if (accesoSesion === "true" && horaSesion) {
-            if (ahora - parseInt(horaSesion) < TIEMPO_EXPIRACION) {
-                limpiarURL();
-                document.documentElement.style.display = "block";
-                return;
-            } else {
-                // Sesión expirada
-                sessionStorage.clear();
-                solicitarClave("SU SESIÓN HA EXPIRADO (15 min).\nIngrese clave para continuar:");
-                return;
-            }
-        }
-
-        // 3. SI NO HAY SESIÓN, VALIDAR LLAVE QR O PEDIR CLAVE
-        if (llaveURL === LLAVE_QR) {
-            // Entró por QR válido: activar sesión y mostrar
-            sessionStorage.setItem("accesoPermitido", "true");
-            sessionStorage.setItem("horaAcceso", ahora.toString());
-            limpiarURL();
-            document.documentElement.style.display = "block";
-        } else {
-            // No tiene llave QR o es incorrecta: pedir clave técnica directamente
-            solicitarClave("ACCESO RESTRINGIDO: Ingrese Clave de Administrador:");
-        }
+        // Mostrar pantalla de error por falta de llave
+        mostrarPantallaError("No se detectó una llave válida o su sesión ha expirado.", ipPublica);
     }
 
     validar();
