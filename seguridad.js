@@ -1,46 +1,23 @@
 (function() {
-    // 1. BLOQUEO VISUAL Y RESTRICCIONES DE INTERFAZ INMEDIATAS
+    // 1. BLOQUEO VISUAL E INTERFAZ
     document.documentElement.style.display = "none";
-    
-    // Bloqueo de Clic Derecho
     document.addEventListener('contextmenu', e => e.preventDefault());
-    
-    // Bloqueo de atajos de teclado (F12, Ctrl+U, Ctrl+Shift+I, etc.)
     document.addEventListener('keydown', e => {
-        if (
-            e.key === 'F12' || 
-            (e.ctrlKey && (e.key === 'u' || e.key === 'U' || e.key === 's' || e.key === 'S')) || 
-            (e.ctrlKey && e.shiftKey && (e.key === 'i' || e.key === 'I' || e.key === 'j' || e.key === 'J' || e.key === 'c' || e.key === 'C'))
-        ) {
+        if (e.key === 'F12' || (e.ctrlKey && (e.key === 'u' || e.key === 's')) || (e.ctrlKey && e.shiftKey && e.key === 'i')) {
             e.preventDefault();
             return false;
         }
     });
 
-    // Anti-Inspección: Bucle para bloquear la consola de desarrollador
+    // Anti-Inspección
     setInterval(() => {
-        (function() {
-            return false;
-        }['constructor']('debugger')());
+        (function() { return false; }['constructor']('debugger')());
     }, 50);
 
-    // ===== CONFIGURACIÓN MAESTRA MONTE NEVADO =====
-    const LLAVE_QR = "8L9]zykR^R,=faETFcxAguaNevada2026";
+    // ===== CONFIGURACIÓN MAESTRA =====
+    const LLAVE_QR = "8L9]zykR^R,faETFcxAguaNevada2026";
     const CLAVE_TECNICA = "Agua2026_Admin"; 
-    const TIEMPO_EXPIRACION = 15 * 60 * 1000; // Ajustado a 15 Minutos
-    const PLANTA = { lat: 13.341861, lon: -88.444417 }; 
-    const RADIO_PERMITIDO_KM = 0.075; // 75 metros
-
-    const esMovil = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-
-    function calcularDistancia(lat1, lon1, lat2, lon2) {
-        const R = 6371;
-        const dLat = (lat2 - lat1) * Math.PI / 180;
-        const dLon = (lon2 - lon1) * Math.PI / 180;
-        const a = Math.sin(dLat/2) * Math.sin(dLat/2) +
-                  Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) * Math.sin(dLon/2) * Math.sin(dLon/2);
-        return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
-    }
+    const TIEMPO_EXPIRACION = 15 * 60 * 1000; // 15 Minutos estrictos
 
     function limpiarURL() {
         const urlLimpia = window.location.protocol + "//" + window.location.host + window.location.pathname;
@@ -60,7 +37,7 @@
                 .ip-box { margin-top:20px; padding:10px; background:#f8f9fa; border-radius:10px; font-family:monospace; font-size:11px; color: #777; }
             </style>
         </head>
-        <body oncontextmenu="return false;">
+        <body>
             <div class="card">
                 <h1 style="font-size:50px; margin:0;">⚠️</h1>
                 <h1>Acceso Restringido</h1>
@@ -79,7 +56,7 @@
             sessionStorage.setItem("horaAcceso", Date.now().toString());
             document.documentElement.style.display = "block";
         } else {
-            alert("Clave incorrecta o acción cancelada.");
+            alert("Clave incorrecta.");
             location.reload();
         }
     }
@@ -91,52 +68,45 @@
         const horaSesion = sessionStorage.getItem("horaAcceso");
         const ahora = Date.now();
 
-        // 1. FILTRO DE PAÍS (Global)
+        // 1. FILTRO DE PAÍS (EL SALVADOR)
         let ipPublica = "Detectando...";
         try {
             const res = await fetch('https://ipapi.co/json/');
             const data = await res.json();
             ipPublica = data.ip;
             if (data.country_code !== 'SV' && data.country_code !== undefined) {
-                mostrarBloqueo("Este sistema solo es accesible dentro del territorio de <b>El Salvador</b>.", ipPublica);
+                mostrarBloqueo("Este sistema solo es accesible desde <b>El Salvador</b>.", ipPublica);
                 return;
             }
-        } catch (e) { ipPublica = "Red Local"; }
+        } catch (e) { 
+            // Si falla el servicio de IP, permitimos continuar pero con cautela
+            ipPublica = "Error de verificación (Red Local)"; 
+        }
 
-        // 2. VERIFICAR SESIÓN (Máximo 15 minutos)
-        if (accesoSesion === "true" && (ahora - parseInt(horaSesion) < TIEMPO_EXPIRACION)) {
+        // 2. VERIFICAR SI LA SESIÓN ESTÁ ACTIVA (15 MINUTOS)
+        if (accesoSesion === "true" && horaSesion) {
+            if (ahora - parseInt(horaSesion) < TIEMPO_EXPIRACION) {
+                limpiarURL();
+                document.documentElement.style.display = "block";
+                return;
+            } else {
+                // Sesión expirada
+                sessionStorage.clear();
+                solicitarClave("SU SESIÓN HA EXPIRADO (15 min).\nIngrese clave para continuar:");
+                return;
+            }
+        }
+
+        // 3. SI NO HAY SESIÓN, VALIDAR LLAVE QR O PEDIR CLAVE
+        if (llaveURL === LLAVE_QR) {
+            // Entró por QR válido: activar sesión y mostrar
+            sessionStorage.setItem("accesoPermitido", "true");
+            sessionStorage.setItem("horaAcceso", ahora.toString());
             limpiarURL();
             document.documentElement.style.display = "block";
-            return;
-        }
-
-        // 3. VALIDAR LLAVE QR
-        if (llaveURL !== LLAVE_QR) {
-            mostrarBloqueo("Contenido privado. Solo puede acceder mediante el <b>código QR autorizado</b> en planta.", ipPublica);
-            return;
-        }
-
-        // 4. VALIDACIÓN POR DISPOSITIVO
-        if (esMovil) {
-            navigator.geolocation.getCurrentPosition(
-                (pos) => {
-                    const dist = calcularDistancia(pos.coords.latitude, pos.coords.longitude, PLANTA.lat, PLANTA.lon);
-                    if (dist <= RADIO_PERMITIDO_KM) {
-                        limpiarURL();
-                        sessionStorage.setItem("accesoPermitido", "true");
-                        sessionStorage.setItem("horaAcceso", ahora.toString());
-                        document.documentElement.style.display = "block";
-                    } else {
-                        solicitarClave("ACCESO DENEGADO: Debe permanecer dentro de las instalaciones.\n\nSi está autorizado, por favor ingrese su clave de acceso o solicitela al administrador.");
-                    }
-                },
-                () => { 
-                    solicitarClave("GPS NO DETECTADO: El sistema requiere ubicación activa.\n\nSi es personal técnico, ingrese su clave de acceso:"); 
-                },
-                { enableHighAccuracy: true, timeout: 6000 }
-            );
         } else {
-            solicitarClave("SISTEMA TÉCNICO (PC): Ingrese clave de acceso:");
+            // No tiene llave QR o es incorrecta: pedir clave técnica directamente
+            solicitarClave("ACCESO RESTRINGIDO: Ingrese Clave de Administrador:");
         }
     }
 
