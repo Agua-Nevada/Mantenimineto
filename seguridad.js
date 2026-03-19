@@ -2,7 +2,7 @@
     // 1. BLOQUEO VISUAL INICIAL
     document.documentElement.style.display = "none";
     
-    // Bloqueos de seguridad
+    // Bloqueos de seguridad (clic derecho y teclas de inspección)
     document.addEventListener('contextmenu', e => e.preventDefault());
     document.addEventListener('keydown', e => {
         if (e.key === 'F12' || (e.ctrlKey && (e.key === 'u' || e.key === 's')) || (e.ctrlKey && e.shiftKey && e.key === 'i')) {
@@ -10,23 +10,82 @@
         }
     });
 
-    // ===== CONFIGURACIÓN MAESTRA =====
-    // Verifica que esta llave sea EXACTAMENTE la que generas en el QR
+    // ===== CONFIGURACIÓN MAESTRA MONTE NEVADO =====
     const LLAVE_QR = "8L9]zykR^R,=faETFcxAguaNevada2026";
     const CLAVE_TECNICA = "Agua2026_Admin"; 
     const TIEMPO_EXPIRACION = 15 * 60 * 1000; 
+
+    const EMPLEADOS = [
+		"Gerson Ivan Patrocionio Ramos",
+		"Hamilton Vladimir Herrera Alvarez",
+		"Jose Antonio Pablo Amaya",
+		"Jose Guillermo Alvarez",
+		"Juan Filadelfo Alvarez Murillo",
+		"Julio Alberto Rodriguez",
+		"Kevin Adonay Gonzalez Angulo",
+		"Neris Antonio Hernandez Chicas",
+		"Paola Berenice Zavala Alfaro",
+		"Ramon Alfredo Saravia Juarez",
+		"Yohanan Bladimir Berrillos Montecinos"
+    ];
+
+    const CARPETA_DIPLOMAS = "Diplomas/";
+    const CARPETA_CARNETS = "Carnets/";
+    const CARPETA_MEDICOS = "Medicos/";
 
     function limpiarURL() {
         const urlLimpia = window.location.protocol + "//" + window.location.host + window.location.pathname;
         window.history.replaceState({}, document.title, urlLimpia);
     }
 
+    // --- INTERFAZ DE DOCUMENTOS ---
+    function mostrarPanelEmpleados() {
+        const contenedorDestino = document.getElementById('lista-empleados-destino');
+        if (!contenedorDestino) return;
+
+        let htmlInyectar = "";
+        EMPLEADOS.forEach((nombre, index) => {
+            // Reemplaza espacios por guiones bajos para los archivos PDF
+            const slug = nombre.replace(/\s+/g, '_');
+            
+            htmlInyectar += `
+            <div class="empleado-card">
+                <div class="name-bar" onclick="window.toggleDocs(${index})">
+                    <span>👤 ${nombre}</span>
+                    <span id="flecha-${index}">+</span>
+                </div>
+                <div id="docs-${index}" class="docs-area">
+                    <a href="${CARPETA_MEDICOS}${slug}_Constancias.pdf" target="_blank" class="doc-link">
+                        <span class="icon">📋</span> Constancia Médica
+                    </a>
+                    <a href="${CARPETA_CARNETS}${slug}_Carnet.pdf" target="_blank" class="doc-link">
+                        <span class="icon">🪪</span> Carnet de Manipulación
+                    </a>
+                    <a href="${CARPETA_DIPLOMAS}${slug}_Diploma.pdf" target="_blank" class="doc-link">
+                        <span class="icon">🎓</span> Diploma de Curso
+                    </a>
+                </div>
+            </div>`;
+        });
+        contenedorDestino.innerHTML = htmlInyectar;
+    }
+
+    // Función global para el acordeón
+    window.toggleDocs = (i) => {
+        const d = document.getElementById(`docs-${i}`);
+        const f = document.getElementById(`flecha-${i}`);
+        if(!d) return;
+        const isOpen = d.style.display === 'block';
+        d.style.display = isOpen ? 'none' : 'block';
+        f.innerText = isOpen ? '+' : '-';
+    };
+
     window.intentarAccesoManual = function() {
-        const pass = prompt("SISTEMA DE EMERGENCIA\nIngrese clave de administrador:");
+        const pass = prompt("SISTEMA MONTE NEVADO\nIngrese clave de administrador:");
         if (pass === CLAVE_TECNICA) {
             sessionStorage.setItem("accesoPermitido", "true");
             sessionStorage.setItem("horaAcceso", Date.now().toString());
-            location.href = window.location.pathname; // Recargar limpio
+            location.reload(); // Recarga la página actual con el acceso ya concedido
         } else if (pass !== null) {
             alert("Clave incorrecta.");
         }
@@ -34,21 +93,14 @@
 
     function mostrarPantallaError(mensaje, ipDetectada = "Verificando...") {
         window.stop();
+        // Nota: Aquí usamos las clases de tu archivo styles.css
         document.documentElement.innerHTML = `
         <head>
             <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-            <style>
-                body { margin:0; background:#f0f2f5; font-family:sans-serif; display:flex; justify-content:center; align-items:center; height:100vh; user-select:none; }
-                .card { background:white; padding:35px; border-radius:20px; box-shadow:0 10px 25px rgba(0,0,0,0.1); width:85%; max-width:400px; text-align:center; }
-                h1 { color:#d9534f; font-size:24px; margin-bottom:15px; }
-                p { color: #555; line-height: 1.6; font-size: 15px; }
-                .btn-manual { display:inline-block; margin-top:20px; color:#007bff; text-decoration:none; font-weight:bold; cursor:pointer; font-size:14px; border:1px solid #007bff; padding:8px 15px; border-radius:8px; transition: 0.3s; }
-                .btn-manual:hover { background:#007bff; color:white; }
-                .ip-box { margin-top:25px; padding:10px; background:#f8f9fa; border-radius:10px; font-family:monospace; font-size:11px; color: #888; border:1px solid #eee; }
-            </style>
+            <link rel="stylesheet" href="styles.css">
         </head>
-        <body>
-            <div class="card">
+        <body class="lock-screen">
+            <div class="lock-card">
                 <div style="font-size:50px;">🚫</div>
                 <h1>Acceso Restringido</h1>
                 <p>${mensaje}</p>
@@ -65,40 +117,48 @@
         const accesoSesion = sessionStorage.getItem("accesoPermitido");
         const horaSesion = sessionStorage.getItem("horaAcceso");
         const ahora = Date.now();
+        const paginaActual = window.location.pathname.split("/").pop();
 
-        // 1. PRIORIDAD: ¿Tiene la llave correcta ahora mismo?
+        let concedido = false;
+
+        // 1. Validar por URL (QR)
         if (llaveURL === LLAVE_QR) {
             sessionStorage.setItem("accesoPermitido", "true");
             sessionStorage.setItem("horaAcceso", ahora.toString());
             limpiarURL();
+            concedido = true;
+        } 
+        // 2. Validar por Sesión activa
+        else if (accesoSesion === "true" && horaSesion) {
+            if (ahora - parseInt(horaSesion) < TIEMPO_EXPIRACION) {
+                concedido = true;
+            } else {
+                sessionStorage.clear();
+            }
+        }
+
+        if (concedido) {
+            // 3. Verificar País (El Salvador)
+            try {
+                const res = await fetch('https://ipapi.co/json/');
+                const data = await res.json();
+                if (data.country_code !== 'SV' && data.country_code !== undefined) {
+                    mostrarPantallaError("Solo accesible en El Salvador.", data.ip);
+                    return;
+                }
+            } catch (e) { console.log("Validación local"); }
+            
+            // 4. Ejecutar renderizado si estamos en empleados.html
+            if (paginaActual === "empleados.html") {
+                mostrarPanelEmpleados();
+            } 
+            
             document.documentElement.style.display = "block";
             return;
         }
 
-        // 2. ¿Tiene una sesión activa de menos de 15 min?
-        if (accesoSesion === "true" && horaSesion) {
-            if (ahora - parseInt(horaSesion) < TIEMPO_EXPIRACION) {
-                document.documentElement.style.display = "block";
-                return;
-            } else {
-                sessionStorage.clear(); // Sesión expirada
-            }
-        }
-
-        // 3. SI NO TIENE LLAVE NI SESIÓN, VERIFICAMOS PAÍS ANTES DE MOSTRAR ERROR
-        let ipPublica = "Detectando...";
-        try {
-            const res = await fetch('https://ipapi.co/json/');
-            const data = await res.json();
-            ipPublica = data.ip;
-            if (data.country_code !== 'SV' && data.country_code !== undefined) {
-                mostrarPantallaError("Este sistema solo es accesible dentro de <b>El Salvador</b>.", ipPublica);
-                return;
-            }
-        } catch (e) { ipPublica = "Red Local"; }
-
-        // Mostrar pantalla de error por falta de llave
-        mostrarPantallaError("No se detectó una llave válida o su sesión ha expirado.", ipPublica);
+        // 5. Si nada funciona, mostrar error
+        mostrarPantallaError("Se requiere llave QR autorizada o la sesión ha expirado.");
     }
 
     validar();
