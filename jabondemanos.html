@@ -10,15 +10,6 @@
     
     <style>html { display: none; }</style>
     <script src="seguridad.js"></script>
-    
-    <style>
-        .container { max-width: 95%; width: 1400px; margin: 0 auto; padding: 30px; }
-        .ficha-higiene { background: #ffffff; padding: 25px; border-left: 5px solid #17a2b8; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); margin: 20px 0; }
-        .badge-personal { background: #17a2b8; color: white; padding: 5px 12px; border-radius: 20px; font-size: 0.8em; vertical-align: middle; }
-        .pasos-lavado { display: flex; flex-wrap: wrap; gap: 20px; margin-top: 20px; justify-content: space-around; }
-        .paso-card { background: #f0fbfc; border: 1px solid #bee5eb; padding: 15px; border-radius: 10px; width: 200px; text-align: center; font-size: 0.9em; }
-        .paso-numero { background: #17a2b8; color: white; width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 10px; font-weight: bold; }
-    </style>
 </head>
 <body>
 
@@ -27,8 +18,8 @@
 </div>
 
 <header>
-    <h1>Higiene y Salud del Personal <span class="badge-personal">PERSONAL</span></h1>
-    <p>Producto: Jabón Neutro Agrada (Limpieza Dérmica)</p>
+    <h1>Higiene y Salud del Personal <span class="badge-premium" style="background: #17a2b8;">PERSONAL</span></h1>
+    <p>Producto: Jabón Neutro Agrada (Limpieza Dérmica Profunda)</p>
 </header>
 
 <nav>
@@ -36,53 +27,35 @@
     <a href="informacion.html">Información</a>
 </nav>
 
-<div class="container">
-
-
+<div class="container container-ficha">
     <h2>Importancia del Lavado de Manos</h2>
     <p>
-        En <strong>Monte Nevado</strong>, las manos del personal son la herramienta principal. El uso de <strong>Agrada</strong> garantiza una limpieza profunda eliminando residuos grasos y materia orgánica, protegiendo al mismo tiempo la integridad de la piel gracias a su pH neutro balanceado.
+        En la planta <strong>Monte Nevado</strong>, el uso de <strong>Agrada</strong> garantiza una limpieza profunda sin irritar la piel, protegiendo la inocuidad del proceso de envasado.
     </p>
 
-    <div class="ficha-higiene">
-        <h3>Características de Agrada:</h3>
+    <div class="ficha-tecnica-resumen" style="border-left-color: #17a2b8;">
+        <h3>Propiedades del Producto:</h3>
         <ul>
-            <li><strong>pH Neutro:</strong> No irrita la piel incluso con lavados frecuentes (cada 30 min).</li>
-            <li><strong>Alto Poder Espumante:</strong> Facilita el arrastre de partículas y microorganismos.</li>
-            <li><strong>Sin Aroma Persistente:</strong> Evita la transferencia de olores químicos a los envases o al agua tratada.</li>
+            <li><strong>pH Neutro:</strong> Formulación balanceada que no irrita la piel ante lavados frecuentes.</li>
+            <li><strong>Sin Aroma Persistente:</strong> Diseñado para plantas de alimentos, evitando la transferencia de olores al producto terminado.</li>
         </ul>
     </div>
 
-    <h2>Técnica Correcta de Lavado (Mínimo 20-30 seg)</h2>
-    
-    <div class="pasos-lavado">
-        <div class="paso-card">
-            <div class="paso-numero">1</div>
-            Humedecer manos y aplicar una dosis de <strong>Agrada</strong>.
-        </div>
-        <div class="paso-card">
-            <div class="paso-numero">2</div>
-            Frotar palmas, dorsos y entre los dedos vigorosamente.
-        </div>
-        <div class="paso-card">
-            <div class="paso-numero">3</div>
-            Limpiar debajo de las uñas y pulgares.
-        </div>
-        <div class="paso-card">
-            <div class="paso-numero">4</div>
-            Enjuagar con abundante agua hasta eliminar la espuma.
-        </div>
-        <div class="paso-card">
-            <div class="paso-numero">5</div>
-            Secar con toalla de papel desechable y cerrar el grifo con la misma.
-        </div>
+    <h2>Protocolo de Lavado Correcto (20-30 seg)</h2>
+    <div class="espectro-grid">
+        <div class="espectro-item">1. Humedecer manos y antebrazos con agua potable.</div>
+        <div class="espectro-item">2. Aplicar una dosis de jabón Agrada en la palma.</div>
+        <div class="espectro-item">3. Frotar palmas, dorsos, entre los dedos y pulgares.</div>
+        <div class="espectro-item">4. Limpiar minuciosamente debajo de las uñas.</div>
+        <div class="espectro-item">5. Enjuagar con abundante agua hasta eliminar el jabón.</div>
+        <div class="espectro-item">6. Secar con papel desechable (toalla sanitaria).</div>
     </div>
 
-    <div class="alert-operativa" style="margin-top:30px; border-left-color: #17a2b8;">
-        💡 <strong>RECOMENDACIÓN TÉCNICA:</strong> Después del secado con papel, se recomienda la aplicación de alcohol gel al 70% o una solución de <strong>DIOXY-SAN</strong> (dosis potabilización) para una desinfección terminal completa antes de ingresar al área de llenado.
+    <div class="warning-activacion">
+        💡 <strong>RECOMENDACIÓN TÉCNICA:</strong> Después del secado con papel, se recomienda la aplicación de alcohol gel al 70% o una solución de <strong>DIOXY-SAN</strong> para una desinfección terminal completa antes de ingresar al área de llenado.
     </div>
 
-    <h2>Frecuencia Obligatoria</h2>
+    <h2>Frecuencia Obligatoria de Lavado</h2>
     <table>
         <thead>
             <tr>
@@ -91,28 +64,15 @@
             </tr>
         </thead>
         <tbody>
-            <tr>
-                <td>Ingreso a Planta</td>
-                <td>Lavado obligatorio con Agrada</td>
-            </tr>
-            <tr>
-                <td>Cambio de turno o puesto</td>
-                <td>Lavado obligatorio con Agrada</td>
-            </tr>
-            <tr>
-                <td>Después de manipular residuos</td>
-                <td>Lavado profundo hasta antebrazos</td>
-            </tr>
-            <tr>
-                <td>Uso de servicios sanitarios</td>
-                <td>Lavado y desinfección posterior</td>
-            </tr>
+            <tr><td>Ingreso a Planta</td><td>Lavado obligatorio con Agrada</td></tr>
+            <tr><td>Cambio de turno o puesto</td><td>Lavado obligatorio con Agrada</td></tr>
+            <tr><td>Después de manipular residuos</td><td>Lavado profundo hasta antebrazos</td></tr>
+            <tr><td>Uso de servicios sanitarios</td><td>Lavado y desinfección posterior</td></tr>
         </tbody>
     </table>
 
-    <div class="warning-danger" style="margin-top:30px;">
-        <strong>🚨 SEGURIDAD:</strong> 
-        En caso de contacto accidental con los ojos, enjuagar con abundante agua. Si presenta irritación o dermatitis persistente, informar al supervisor de seguridad industrial.
+    <div class="warning-danger-ficha">
+        <strong>🚨 SEGURIDAD:</strong> En caso de contacto accidental con los ojos, enjuagar con abundante agua. Si presenta irritación o dermatitis persistente, informar al supervisor de seguridad industrial.
     </div>
 </div>
 

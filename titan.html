@@ -5,17 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Protocolo de desinfección química para tuberías y filtros usando TITAN 15% PLUS.">
     <title>Protocolo de Desinfección - Monte Nevado</title>
-    
     <link rel="stylesheet" href="styles.css">
-    
     <style>html { display: none; }</style>
     <script src="seguridad.js"></script>
-    <style>
-        /* Estilos adicionales para integrar el PDF y resaltar datos del Titan */
-        .pdf-container { margin-top: 30px; border: 2px solid #004a99; border-radius: 8px; overflow: hidden; }
-        .ficha-resumen { background: #f9f9f9; padding: 15px; border-left: 5px solid #d9534f; margin: 20px 0; }
-        .alert-tecnica { background: #fff3cd; color: #856404; padding: 15px; border-radius: 5px; font-weight: bold; }
-    </style>
 </head>
 <body>
 
@@ -30,23 +22,16 @@
 
 <nav>
     <a href="index.html">Inicio</a>
-	<a href="informacion.html">Información</a>
+    <a href="informacion.html">Información</a>
 </nav>
 
- </div>
-
-    <br>
-
-</div>
-
-<div class="container">
-
+<div class="container container-ficha">
     <h2>Propósito del Sanitizante</h2>
     <p>
         Para el mantenimiento de la inocuidad en <strong>Monte Nevado</strong>, utilizamos TITAN 15% PLUS. Es un desinfectante de alto impacto diseñado para la eliminación inmediata de microorganismos patógenos en las líneas de conducción y sistemas de filtrado.
     </p>
 
-    <div class="ficha-resumen">
+    <div class="ficha-resumen titan">
         <strong>Especificaciones del Producto:</strong>
         <ul>
             <li><strong>Acción Germicida:</strong> Elimina carga microbiana en 30 segundos (>7.5x10⁶ UFC).</li>
@@ -57,7 +42,6 @@
 
     <h2>Protocolo de Aplicación en Lavado Químico</h2>
     <p>Basado en la ficha técnica, estas son las diluciones obligatorias para nuestro sistema:</p>
-    
     <table>
         <thead>
             <tr>
@@ -67,21 +51,9 @@
             </tr>
         </thead>
         <tbody>
-            <tr>
-                <td>Tuberías y Conexiones</td>
-                <td>100 - 200 ppm</td>
-                <td>Sin necesidad de enjuague posterior (Norma CFR).</td>
-            </tr>
-            <tr>
-                <td>Filtros y Superficies</td>
-                <td>220 - 400 ppm</td>
-                <td>Requiere enjuague con agua potable.</td>
-            </tr>
-            <tr>
-                <td>Acción Esterilizante</td>
-                <td>500+ ppm</td>
-                <td>Uso exclusivo bajo supervisión técnica.</td>
-            </tr>
+            <tr><td>Tuberías y Conexiones</td><td>100 - 200 ppm</td><td>Sin necesidad de enjuague posterior (Norma CFR).</td></tr>
+            <tr><td>Filtros y Superficies</td><td>220 - 400 ppm</td><td>Requiere enjuague con agua potable.</td></tr>
+            <tr><td>Acción Esterilizante</td><td>500+ ppm</td><td>Uso exclusivo bajo supervisión técnica.</td></tr>
         </tbody>
     </table>
 
@@ -89,22 +61,14 @@
         ⚠️ ADVERTENCIA DE SEGURIDAD: TITAN 15% PLUS es un producto corrosivo. Nunca debe mezclarse con cloro, ya que genera gases tóxicos. El pH de la solución al 1% es de 2.50 - 4.50.
     </div>
 
-    <h2>Documentación Técnica (Ficha Técnica)</h2>
-    <p>Consulte el documento oficial adjunto para detalles sobre estabilidad, almacenamiento y primeros auxilios:</p>
-
-    <div class="pdf-container">
-	<iframe
-		src="TITAN-15-PLUS-Ficha-Tecnica.pdf"
-		width="100%"
-		height="100%">
-		<p>Tu navegador no permite visualizar el PDF.
-		<a href="TITAN-15-PLUS-Ficha-Tecnica.pdf">Descargar documento aquí.</a>
-    </p>
-</iframe>
+    <h2>Ficha Técnica Adjunta</h2>
+    <div class="pdf-container-especifico">
+        <iframe src="FichasTecnicas/TITAN-15-PLUS-Ficha-Tecnica.pdf"></iframe>
+    </div>
+</div>
 
 <footer>
     <p>Envasadora Monte Nevado | Intranet de Mantenimiento &copy; 2026</p>
 </footer>
-
 </body>
 </html>
